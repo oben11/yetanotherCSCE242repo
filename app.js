@@ -20,53 +20,47 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-let houses = [
-  {
-    _id: 1,
-    name: "Farmhouse",
-    size: 2000,
-    bedrooms: 3,
-    bathrooms: 2.5,
-    features: ["wrap around porch", "attached garage"],
-    main_image: "farm.webp",
-  },
-  {
-    _id: 2,
-    name: "Mountain House",
-    size: 1700,
-    bedrooms: 3,
-    bathrooms: 2,
-    features: ["grand porch", "covered deck"],
-    main_image: "mountain-house.webp",
-  },
-  {
-    _id: 3,
-    name: "Lake House",
-    size: 3000,
-    bedrooms: 4,
-    bathrooms: 3,
-    features: ["covered deck", "outdoor kitchen", "pool house"],
-    main_image: "farm.webp",
-  },
-];
+const locations = require("./json/locations.json");
+const merchandise = require("./json/merchandise.json");
 
 //listen for incoming requests
 app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
 
-app.get("/api/houses", (req, res) => {
-  console.log("GET request received for /api/houses");
-  res.send(houses);
+app.get("/api/locations", (req, res) => {
+  console.log("GET request received for /api/locations");
+  res.send(locations);
 });
 
-app.get("/api/houses/:id", (req, res) => {
-  console.log("GET request received for /api/houses/:id");
-  const id = parseInt(req.params.id);
-  const house = houses.find((h) => h._id === id); // find 
-  if (!house) {
-    res.status(404).send("House not found");
+
+app.get("/api/locations/:seed", (req, res) => {
+  console.log("GET request received for /api/locations/:seed");
+  const seed = req.params.seed;
+  const location = locations.find((l) => l.seed === seed); // find
+  if (!location) {
+    res.status(404).send("Location not found");
   } else {
-    res.send(house);
+    res.send(location);
   }
 });
+
+
+app.get("/api/merchandise", (req, res) => {
+  console.log("GET request received for /api/merchandise");
+  res.send(merchandise);
+});
+
+
+app.get("/api/merchandise/:id", (req, res) => {
+  console.log("GET request received for /api/merchandise/:id");
+  const id = parseInt(req.params.id);
+  const merch = merchandise.find((m) => m.id === id); // find
+  if (!merch) {
+    res.status(404).send("Merchandise item not found");
+  } else {
+    res.send(merch);
+  }
+});
+
+
