@@ -59,3 +59,14 @@ app.get("/api/houses", (req, res) => {
   console.log("GET request received for /api/houses");
   res.send(houses);
 });
+
+app.get("/api/houses/:id", (req, res) => {
+  console.log("GET request received for /api/houses/:id");
+  const id = parseInt(req.params.id);
+  const house = houses.find((h) => h._id === id); // find 
+  if (!house) {
+    res.status(404).send("House not found");
+  } else {
+    res.send(house);
+  }
+});
