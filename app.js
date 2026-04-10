@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const app = express();
+const Joi = require("joi");
+const path = require("path");
+
 
 // front end will be in public folder
 app.use(express.static("public"));
@@ -28,16 +31,17 @@ app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
 
+// Serve a all locations
 app.get("/api/locations", (req, res) => {
   console.log("GET request received for /api/locations");
   res.send(locations);
 });
 
-
-app.get("/api/locations/:seed", (req, res) => {
-  console.log("GET request received for /api/locations/:seed");
-  const seed = req.params.seed;
-  const location = locations.find((l) => l.seed === seed); // find
+// Serve a single Location
+app.get("/api/locations/:id", (req, res) => {
+  console.log("GET request received for /api/locations/:id");
+  const id = parseInt(req.params.id);
+  const location = locations.find((l) => l.id === id); // find
   if (!location) {
     res.status(404).send("Location not found");
   } else {
@@ -45,11 +49,68 @@ app.get("/api/locations/:seed", (req, res) => {
   }
 });
 
+// Serve Location images
+app.get("/api/locations/:id/image", (req, res) => {
+  const id = parseInt(req.params.id);
+  const location = locations.find((l) => l.id === id);
+
+  if (!location) {
+    return res.status(404).send("Location not found");
+  }
+
+  const imagePath = path.join(__dirname, "public", location.img);
+
+  res.sendFile(imagePath);
+});
+
+
+
+//today
+
+app.post("/api/locations", upload.single("img"), (req, res) => {
+  console.log("POST request received for /api/locations");
+  const result = validateLocation(req.body);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+  console.log("passed validation");
+
+  const location = {
+    id: locations.length + 1,
+    img: `/location/${req.file.originalname}`,
+    alt: req.body.alt,
+    name: req.body.name,
+    address: req.body.address,
+    hours: req.body.hours,
+    phone: req.body.phone,
+  };
+  
+  locations.push(location);
+  res.send(location);
+});
+
+const validateLocation = (location) => {
+  const schema = Joi.object({
+    id: Joi.allow(""),
+    img: `/images/${req.file.originalname}`,
+    alt: Joi.string().min(3).required(),
+    name: Joi.string().min(3).required(),
+    address: Joi.string().min(3).required(),
+    hours: Joi.string().min(3).required(),
+    phone: Joi.string().min(3).required(),
+  });
+  return schema.validate(location);
+};
 
 app.get("/api/merchandise", (req, res) => {
   console.log("GET request received for /api/merchandise");
   res.send(merchandise);
 });
+
+
+
 
 
 app.get("/api/merchandise/:id", (req, res) => {

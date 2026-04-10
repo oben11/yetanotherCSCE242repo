@@ -1,6 +1,7 @@
 [
   {
-    "seed": "downtown-store",
+    "id": 1,
+    "img": "/location/1.jpg",
     "alt": "Downtown retail storefront",
     "name": "Downtown Flagship",
     "address": "123 Main Street, Downtown",
@@ -8,7 +9,8 @@
     "phone": "(555) 123-4567"
   },
   {
-    "seed": "riverside-cafe",
+    "id": 2,
+    "img": "/location/2.jpg",
     "alt": "Riverside cafe location",
     "name": "Riverside Cafe",
     "address": "456 River Road, Riverside",
@@ -16,7 +18,8 @@
     "phone": "(555) 234-5678"
   },
   {
-    "seed": "university-shop",
+    "id": 3,
+    "img": "/location/3.jpg",
     "alt": "University district coffee shop",
     "name": "University District",
     "address": "789 College Ave, University District",
@@ -24,7 +27,8 @@
     "phone": "(555) 345-6789"
   },
   {
-    "seed": "westside-retail",
+    "id": 4,
+    "img": "/location/4.jpg",
     "alt": "Westside retail location",
     "name": "Westside Location",
     "address": "321 West Boulevard, Westside",
@@ -32,7 +36,8 @@
     "phone": "(555) 456-7890"
   },
   {
-    "seed": "airport-terminal",
+    "id": 5,
+    "img": "/location/5.jpg",
     "alt": "Airport terminal cafe location",
     "name": "Airport Terminal",
     "address": "Terminal B, Gate 12, Airport",
@@ -40,7 +45,8 @@
     "phone": "(555) 567-8901"
   },
   {
-    "seed": "northgate-shopping",
+    "id": 6,
+    "img": "/location/6.jpg",
     "alt": "Northgate shopping center retail store",
     "name": "Northgate Shopping Center",
     "address": "654 North Plaza, Northgate",
