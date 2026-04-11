@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 0,
     "img": "/location/1.jpg",
     "alt": "Downtown retail storefront",
     "name": "Downtown Flagship",
@@ -9,7 +9,7 @@
     "phone": "(555) 123-4567"
   },
   {
-    "id": 2,
+    "id": 1,
     "img": "/location/2.jpg",
     "alt": "Riverside cafe location",
     "name": "Riverside Cafe",
@@ -18,7 +18,7 @@
     "phone": "(555) 234-5678"
   },
   {
-    "id": 3,
+    "id": 2,
     "img": "/location/3.jpg",
     "alt": "University district coffee shop",
     "name": "University District",
@@ -27,7 +27,7 @@
     "phone": "(555) 345-6789"
   },
   {
-    "id": 4,
+    "id": 3,
     "img": "/location/4.jpg",
     "alt": "Westside retail location",
     "name": "Westside Location",
@@ -36,7 +36,7 @@
     "phone": "(555) 456-7890"
   },
   {
-    "id": 5,
+    "id": 4,
     "img": "/location/5.jpg",
     "alt": "Airport terminal cafe location",
     "name": "Airport Terminal",
@@ -45,7 +45,7 @@
     "phone": "(555) 567-8901"
   },
   {
-    "id": 6,
+    "id": 5,
     "img": "/location/6.jpg",
     "alt": "Northgate shopping center retail store",
     "name": "Northgate Shopping Center",
