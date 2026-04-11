@@ -26,10 +26,6 @@ const upload = multer({ storage: storage });
 const locations = require("./json/locations.json");
 const merchandise = require("./json/merchandise.json");
 
-//listen for incoming requests
-app.listen(3001, () => {
-  console.log("Server is running on port 3001");
-});
 
 // Serve a all locations
 app.get("/api/locations", (req, res) => {
@@ -67,7 +63,7 @@ app.get("/api/locations/:id/image", (req, res) => {
 
 //today
 
-app.post("/api/locations", upload.single("img"), (req, res) => {
+app.post("/api/locations", upload.single("image"), (req, res) => {
   console.log("POST request received for /api/locations");
   const result = validateLocation(req.body);
 
@@ -79,7 +75,7 @@ app.post("/api/locations", upload.single("img"), (req, res) => {
 
   const location = {
     id: locations.length + 1,
-    img: `/location/${req.file.originalname}`,
+    img: `/images/${req.file.originalname}`,
     alt: req.body.alt,
     name: req.body.name,
     address: req.body.address,
@@ -94,7 +90,7 @@ app.post("/api/locations", upload.single("img"), (req, res) => {
 const validateLocation = (location) => {
   const schema = Joi.object({
     id: Joi.allow(""),
-    img: `/images/${req.file.originalname}`,
+    img: Joi.string().optional(),
     alt: Joi.string().min(3).required(),
     name: Joi.string().min(3).required(),
     address: Joi.string().min(3).required(),
@@ -124,4 +120,9 @@ app.get("/api/merchandise/:id", (req, res) => {
   }
 });
 
+
+const port = process.env.PORT || 3001;
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Server is up and running on ${port}`);
+});
 
