@@ -4,11 +4,17 @@ const multer = require("multer");
 const app = express();
 const Joi = require("joi");
 const path = require("path");
+const fs = require("fs");
 
+// Ensure upload directory exists
+const uploadDir = "./public/images/";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
-// front end will be in public folder
+// Front end will be in public folder
 app.use(express.static("public"));
-// this allows us to parse json in the body of requests
+// This allows us to parse json in the body of requests
 app.use(express.json());
 app.use(cors());
 
@@ -26,18 +32,17 @@ const upload = multer({ storage: storage });
 const locations = require("./json/locations.json");
 const merchandise = require("./json/merchandise.json");
 
-
-// Serve a all locations
+// Serve all locations
 app.get("/api/locations", (req, res) => {
   console.log("GET request received for /api/locations");
   res.send(locations);
 });
 
-// Serve a single Location
+// Serve a single location
 app.get("/api/locations/:id", (req, res) => {
   console.log("GET request received for /api/locations/:id");
   const id = parseInt(req.params.id);
-  const location = locations.find((l) => l.id === id); // find
+  const location = locations.find((l) => l.id === id);
   if (!location) {
     res.status(404).send("Location not found");
   } else {
@@ -45,7 +50,7 @@ app.get("/api/locations/:id", (req, res) => {
   }
 });
 
-// Serve Location images
+// Serve location images
 app.get("/api/locations/:id/image", (req, res) => {
   const id = parseInt(req.params.id);
   const location = locations.find((l) => l.id === id);
@@ -55,23 +60,23 @@ app.get("/api/locations/:id/image", (req, res) => {
   }
 
   const imagePath = path.join(__dirname, "public", location.img);
-
   res.sendFile(imagePath);
 });
 
-
-
-//today
-
+// Add a new location
 app.post("/api/locations", upload.single("image"), (req, res) => {
   console.log("POST request received for /api/locations");
-  const result = validateLocation(req.body);
 
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
-    return;
+  if (!req.file) {
+    return res.status(400).send("Image file is required");
   }
-  console.log("passed validation");
+
+  const result = validateLocation(req.body);
+  if (result.error) {
+    return res.status(400).send(result.error.details[0].message);
+  }
+
+  console.log("Passed validation");
 
   const location = {
     id: locations.length + 1,
@@ -82,7 +87,7 @@ app.post("/api/locations", upload.single("image"), (req, res) => {
     hours: req.body.hours,
     phone: req.body.phone,
   };
-  
+
   locations.push(location);
   res.send(location);
 });
@@ -90,29 +95,26 @@ app.post("/api/locations", upload.single("image"), (req, res) => {
 const validateLocation = (location) => {
   const schema = Joi.object({
     id: Joi.allow(""),
-    img: Joi.string().optional(),
     alt: Joi.string().min(3).required(),
     name: Joi.string().min(3).required(),
     address: Joi.string().min(3).required(),
     hours: Joi.string().min(3).required(),
-    phone: Joi.string().min(3).required(),
+    phone: Joi.string().min(7).required(),
   });
   return schema.validate(location);
 };
 
+// Serve all merchandise
 app.get("/api/merchandise", (req, res) => {
   console.log("GET request received for /api/merchandise");
   res.send(merchandise);
 });
 
-
-
-
-
+// Serve a single merchandise item
 app.get("/api/merchandise/:id", (req, res) => {
   console.log("GET request received for /api/merchandise/:id");
   const id = parseInt(req.params.id);
-  const merch = merchandise.find((m) => m.id === id); // find
+  const merch = merchandise.find((m) => m.id === id);
   if (!merch) {
     res.status(404).send("Merchandise item not found");
   } else {
@@ -120,9 +122,7 @@ app.get("/api/merchandise/:id", (req, res) => {
   }
 });
 
-
 const port = process.env.PORT || 3001;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is up and running on ${port}`);
 });
-
